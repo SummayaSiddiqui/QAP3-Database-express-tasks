@@ -26,4 +26,4 @@ async function createTable() {
   }
 }
 
-module.exports = pool;
+module.exports = { pool, createTable };

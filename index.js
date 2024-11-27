@@ -1,4 +1,5 @@
 const express = require("express");
+const { createTable } = require("./db");
 const app = express();
 const PORT = 3000;
 
@@ -25,11 +26,9 @@ app.get("/tasks", (req, res) => {
 app.post("/tasks", (request, response) => {
   const { id, description, status } = request.body;
   if (!id || !description || !status) {
-    return response
-      .status(400)
-      .json({
-        error: "All fields (id, description, status) are required",
-      });
+    return response.status(400).json({
+      error: "All fields (id, description, status) are required",
+    });
   }
 
   tasks.push({ id, description, status });
@@ -61,6 +60,10 @@ app.delete("/tasks/:id", (request, response) => {
   response.json({ message: "Task deleted successfully" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Call createTable
+(async () => {
+  await createTable();
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+})();
